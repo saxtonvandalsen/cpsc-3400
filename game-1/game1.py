@@ -37,8 +37,9 @@ class TwentyQuestionsGame:
             # not passed in command line
             self.root_node = Node(0, 'question', "Is this a test?")
 
-    # Load the tree file and pass it on to create the questions
-    # in the tree file in binary form
+    # Load the .tree file and pass it on to create the questions binary tree
+    # Needed to make sure each question and answer in the tree is mapping accordingly
+    # even if the nodes within the given file are out of out of order
     def load_tree_file(self, tree_file):
         # Opening the file in read mode by r
         file = open(tree_file, 'r')
@@ -50,6 +51,8 @@ class TwentyQuestionsGame:
 
         # Reading all nodes and storing them in dictionary nodes
         for line in file:
+            # Using strip throughout code for removing spaces and handling new lines from data
+            # then splitting into sections based on lines of nodes descriptions formatting
             line = line.strip()
             sections = line.split(":")
 
@@ -64,40 +67,31 @@ class TwentyQuestionsGame:
             left_id = int(sections[4]) if sections[4] else None
             right_id = int(sections[5]) if sections[5] else None
 
-            #
+            # Creating the node object and storing node IDs for
+            # linking later
             nodes[node_id] = Node(node_id, node_type, data)
             nodes[node_id].parent_id = parent_id
             nodes[node_id].left_id = left_id
             nodes[node_id].right_id = right_id
         
+        # Closing the file here after being loaded and reading all lines
         file.close()
 
-        # 
+        # Linking child nodes based on their node IDs
         for node in nodes.values():
             if node.left_id != None:
                 node.left = nodes[node.left_id]
             if node.right_id != None:
                 node.right = nodes[node.right_id]
 
-        #
+        # Iterating to search for and return the root node
         for node in nodes.values():
             if node.parent_id is None:
                 return node
 
-    # 
-    def save_tree(self, node, file, parent_id=""):
-        if node:
-            #
-            left_id = node.left.node_id if node.left else ""
-            right_id = node.right.node_id if node.right else ""
-            
-            #
-            file.write(f'{node.node_id}:{node.node_type}:{node.data}:{parent_id}:{left_id}:{right_id}\n')
-            self.save_tree(node.left, file, node.node_id)
-            self.save_tree(node.right, file, node.node_id)
-
     # Needed this handle asking questions and traversing through the tree.
-    # It's useful for triggering learning to add new info
+    # It's needed for triggering learning to add new nodes of questions and answers
+    # Also part of handling the question coutner limit
     def handle_question(self, node, question_counter=0):
 
         # Handling the 20 questions limit by ending the questioning if
@@ -110,7 +104,7 @@ class TwentyQuestionsGame:
         # Checking if we are at an answer node or not
         if node.node_type == 'answer':
             # Asking if the guess was correct
-            response = input(f"Is it a(n) {node.data}? (y/n): ").strip().lower()
+            response = input(f"Is it {node.data}? (y/n): ").strip().lower()
             # If correct print the winning message and if not
             # we need to trigger to learn and update the tree for this point
             if response == 'y':
