@@ -11,10 +11,20 @@
     (display "\n") ; print on a new line
 )
 
-;
+; After getting the range of numbers needed, I need to 
+; define a function to recursively iterate through the range
+; and sum up the multiples of 3 and 5
+(define (sum-multiples-3-and-5 range)
+    ; base case using zero? to check if length of range is zero
+    (cond ((zero? (length range)) 0)
+        
+    )
+)
 
 
 ; Using iota with specifically declared parameters
 ; that we learned in class to define the range of integers
 ; from 1 to 29,999 inclusive
-(define range (iota num 1 29999))
+; Defining num to 29999 for use
+(define num 29999)
+(define range (iota num 1))
