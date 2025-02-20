@@ -1,0 +1,23 @@
+; Can change reverse to edit output order
+(define (iota-by-append curr stop l)
+    (cond ((zero? (- stop curr)) (reverse l))
+        (else (iota-by-append (+ curr 1) stop (append (list curr) l)))
+    )
+)
+(define (iota-by-cons curr stop l)
+    (cond ((zero? (- stop curr)) (reverse l))
+        (else (iota-by-cons (+ curr 1) stop (cons curr l)))
+    )
+)
+
+(define (print data)
+    (display data)
+    (display "\n")
+)
+
+(define la (iota-by-append 0 10 (list)))
+(define lc (iota-by-cons 0 10 (list)))
+(print "List by Append:")
+(print la)
+(print "List by Construct:")
+(print lc)
