@@ -1,3 +1,8 @@
+# CPSC 3400-02 Languages & Computation
+# Game 2
+# Saxton Van Dalsen
+# 2//2025
+
 import random
 import re
 import sys
