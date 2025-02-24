@@ -3,6 +3,10 @@
 # Saxton Van Dalsen
 # 2//2025
 
+# Added comments throughout starter code after playing/testing out the game
+# and when reading the handout to better understand different parts of the code and 
+# to go back and use as refreshers or reference to an aspect of the game
+
 import random
 import re
 import sys
@@ -230,10 +234,46 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         seed = sum([ord(c) for c in sys.argv[1]])
     random.seed(seed)
-    aliens = []
+    aliens = [] # Where the root aliens are being held at
     board = Board(HEIGHT, WIDTH)
     player = Player(board, 3, 3)
     userin = ""
+
+    # Initially I tried to implement mark and sweep garbage collection inside Board class
+    # After testing and reviewing the handout, I realized that the root aliens are managed in main.
+    # Because of this I instead move to troubleshooting within main to handle squished aliens being
+    # properly removed while maintaining the references to their children
+    def markAndSweep(aliens):
+        # New list to hold children and non-squished aliens
+        new_aliens = []
+        
+        for alien in aliens:
+            if alien.squished:
+                # Handling if alien is squished then move its children
+                # to new aliens list
+                for child in alien.children:
+                    if not child.squished:
+                        new_aliens.append(child)
+            else:
+                # Used to store non-squished alien children
+                remaining_children = []
+                # Checking for each child of each alien, if not squished
+                # then adding it to the new list
+                for child in alien.children:
+                    if not child.squished:
+                        remaining_children.append(child)
+                # Then updating to remove squished children and maintaining
+                # current aline since it wasn't squished
+                alien.children = remaining_children
+                new_aliens.append(alien)
+
+        # Updating original aliens root list with updated one
+        # Clearing elements from original list first then adding in
+        # updated aliens back to that list
+        aliens.clear()
+        for alien in new_aliens:
+            aliens.append(alien)
+        
     while(userin.upper() != "QUIT" and userin.upper() != "EXIT"):
         x = random.randint(0, WIDTH - 1)
         y = random.randint(0, HEIGHT - 1)
@@ -265,6 +305,11 @@ if __name__ == "__main__":
                 player.strength -= 1 if player.strength > 1 else 0
             player.score += score
         board.doTimestep()
+
+        # I'm calling my mark and sweep after board timestep function because I
+        # need the changes to the game state to take affect before removing references
+        # to squished aliens, to fix the aliens trees
+        markAndSweep(aliens)
         player.doTimestep()
         if board.isEmpty():
             print("You win!")
