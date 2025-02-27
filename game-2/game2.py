@@ -205,7 +205,7 @@ class Player:
         width = self.board.width
         size = (width * CELL_WIDTH) + 1
         # Added in the display of current troops and bombs below the grid cells
-        # and adjusted formatting to make simpler
+        # and adjusted formatting
         string = "TURN: {0}\tSTRENGTH: {1}\tSCORE: {2}\tTROOPS: {3}\tBOMBS: {4}".format(
             self.turn, self.strength, self.score, self.troops, self.bombs)
         return "{0:^{1}}".format(string, size)
@@ -213,49 +213,61 @@ class Player:
     def doTimestep(self):
         self.turn += 1
 
-    def printTree(alien, depth=0):
+    def printTree(self, alien, depth=0):
         tree = "{0}({1}):".format(str(alien), depth)
         if len(alien.children) == 0:
             return tree
         else:
             for child in alien.children:
-                tree += printTree(child, depth + 1)
+                tree += self.printTree(child, depth + 1)
         return tree
 
-    def printTrees(aliens):
+    def printTrees(self, aliens):
         for alien in aliens:
-            tree = printTree(alien)
+            tree = self.printTree(alien)
             print(tree)
 
     # I was thinking to help balance out the game I would incorporate a feature to use
     # troops where you can attack multiple times within a turn if you have multiple troops available
     def useTroops(self):
         if self.troops > 0:
-            print(f"You have {self.troops} troops. You're given the option to attack multiple coordinate.")
+            print(f"You have {self.troops} troops. You're given the option to attack multiple coordinates this turn.")
+            print("In addition to your standard regular attack each turn.")
+            print("Type EXIT or QUIT to leave the game. Type TREES to display the alien trees.\n")
             attacks = []
 
             # Providing the player option to pick different coordinates for multiple attacks
             for count in range(self.troops + 1):
                 userin = input("Enter coordinate (x,y) or press Enter to skip: ")
 
-                # Still providing option if they would like to exit or quit at any time
+                # Still providing option if they would like to exit, quit or display the 
+                # trees so they can see while attacking
                 if userin == "QUIT" or userin == "EXIT":
                     exit(0)
+                elif userin.upper() == "TREES":
+                    self.printTrees(aliens)
+                    continue
 
-                # Using user input for coordinates attack
+                # Using user input for coordinates attack, helped to have the one from starter code in main
+                # for reusability
                 search = re.search(r"\(?(-?\d+)[, ]+(-?\d+)\)?", userin)
                 if search:
                     userx, usery = map(int, search.groups())
                     attacks.append((userx, usery))
+                
+                # Additional check for empty response, to move forward with gamge
+                if userin.strip() == "":
+                    break
 
-            self.troops -= 1
+            # Subtracting and update number of troops based on how many you used on attack each turn
+            self.troops -= len(attacks)
             return attacks
         
         return []
 
     # Adding a bombing feature as well to help stregthen attacks on aliens (to make the game a bit more fair)
     # as it seems in the starter code the aliens have the advantage based on only being able to attack once
-    # each turn for the player. Player earns 1 bomb each turn.
+    # each turn for the player and multiplying concurrent affect. They build up quickly.
     # If player has atleast 2 bombs in inventory then they'll be asked if they'd like to bomb on the turn,
     # where a bomb deals twice the damage of their current strength
     def useBomb(self, coords):
@@ -269,144 +281,188 @@ class Player:
 
 
 if __name__ == "__main__":
-    seed = 0
-    if len(sys.argv) > 1:
-        seed = sum([ord(c) for c in sys.argv[1]])
-    random.seed(seed)
-    aliens = [] # Where the root aliens are being held at
-    board = Board(HEIGHT, WIDTH)
-    player = Player(board, 3, 3)
-    userin = ""
+    # Adding this to provide the player the option to play again or not
+    # after winning or losing
+    while True:
+        seed = 0
+        if len(sys.argv) > 1:
+            seed = sum([ord(c) for c in sys.argv[1]])
+        random.seed(seed)
+        aliens = [] # Where the root aliens are being held at
+        board = Board(HEIGHT, WIDTH)
+        player = Player(board, 2, 1) # Starting with 2 troops & 1 bomb
+        userin = ""
 
-    # Initially I tried to implement mark and sweep garbage collection inside Board class
-    # After testing and reviewing the handout, I realized that the root aliens are managed in main.
-    # Because of this I instead move to troubleshooting within main to handle squished aliens being
-    # properly removed while maintaining the references to their children
-    def markAndSweep(aliens):
-        # New list to hold children and non-squished aliens
-        new_aliens = []
-        
-        for alien in aliens:
-            if alien.squished:
-                # Handling if alien is squished then move its children
-                # to new aliens list
-                for child in alien.children:
-                    if not child.squished:
-                        new_aliens.append(child)
-            else:
-                # Used to store non-squished alien children
-                remaining_children = []
-                # Checking for each child of each alien, if not squished
-                # then adding it to the new list
-                for child in alien.children:
-                    if not child.squished:
-                        remaining_children.append(child)
-                # Then updating to remove squished children and maintaining
-                # current aline since it wasn't squished
-                alien.children = remaining_children
-                new_aliens.append(alien)
+        # Restart game helper function to provide the user the option on losing or winning state
+        def restartGame():
+            # Making sure correct reset of the global variables on restart
+            global aliens, board, player, userin
 
-        # Updating original aliens root list with updated one
-        # Clearing elements from original list first then adding in
-        # updated aliens back to that list
-        aliens.clear()
-        for alien in new_aliens:
-            aliens.append(alien)
-        
-    while(userin.upper() != "QUIT" and userin.upper() != "EXIT"):
-        x = random.randint(0, WIDTH - 1)
-        y = random.randint(0, HEIGHT - 1)
-        s = random.randint(1, STRENGTH)
-        if player.turn == 0:
-            s = 5
-        if board.isEmpty((x, y)):
-            alien = Alien(board, (x, y), s)
-            aliens.append(alien)
-        print(board)
-        print(player)
+            # Resetting the seed for the game
+            seed = 0
+            if len(sys.argv) > 1:
+                seed = sum([ord(c) for c in sys.argv[1]])
+            random.seed(seed)
 
-        # Handling and providing user option for multiple troop attacks
-        attack_coords = player.useTroops()  # Get extra attack coordinates
-        
-        # If minimum troops aren't available, single attack
-        if not attack_coords:
-            userin = input("Choose a coordinate to attack (x,y): ")
+            # Resets, based on how game intially starts
+            aliens = []
+            board = Board(HEIGHT, WIDTH)
+            player = Player(board, 2, 1)
+            userin = ""
+
+            print("\nYou have now started a new game! Have fun!\n")
+
+
+        # Initially I tried to implement mark and sweep garbage collection inside Board class. Ran into multiple issues.
+        # After testing and reviewing the handout, I realized that the root aliens are managed in main.
+        # Because of this I instead move to troubleshooting within main to handle squished aliens being
+        # properly removed while maintaining the references to their children
+        def markAndSweep(aliens):
+            # New list to hold children and non-squished aliens
+            new_aliens = []
             
-            # Handle exit conditions and tree output option
-            if userin.upper() == "QUIT" or userin.upper() == "EXIT":
-                break
-            elif userin.upper() == "TREES":
-                printTrees(aliens)
-                continue # Continue after trees of aliens are displayed
+            for alien in aliens:
+                if alien.squished:
+                    # Handling if alien is squished then move its children
+                    # to new aliens list
+                    for child in alien.children:
+                        if not child.squished:
+                            new_aliens.append(child)
+                else:
+                    # Used to store non-squished remaining alien children
+                    remaining_children = []
+                    # Checking for each child of each alien, if not squished
+                    # then adding it to the remaining list
+                    for child in alien.children:
+                        if not child.squished:
+                            remaining_children.append(child)
+                    # Then updating to remove squished children and maintaining
+                    # current aline since it wasn't squished
+                    alien.children = remaining_children
+                    new_aliens.append(alien)
 
-            # User input for coordinates attack
-            search = re.search(r"\(?(-?\d+)[, ]+(-?\d+)\)?", userin)
-            if search:
-                userx, usery = map(int, search.groups())
-                attack_coords.append((userx, usery))
+            # Updating original aliens root list with updated one
+            # Clearing elements from original list first then adding in
+            # updated aliens back to that list
+            aliens.clear()
+            for alien in new_aliens:
+                aliens.append(alien)
+            
+        while(userin.upper() != "QUIT" and userin.upper() != "EXIT"):
+            x = random.randint(0, WIDTH - 1)
+            y = random.randint(0, HEIGHT - 1)
+            s = random.randint(1, STRENGTH)
+            if player.turn == 0:
+                s = 5
+            if board.isEmpty((x, y)):
+                alien = Alien(board, (x, y), s)
+                aliens.append(alien)
+            print(board)
+            print(player)
+
+            # Handling and providing user option for multiple troop attacks if available
+            attack_coords = player.useTroops()
+            
+            # If minimum troops aren't available, single attack
+            if not attack_coords:
+                userin = input("Choose a coordinate to attack (x,y): ")
+                
+                # Handle exit conditions and tree output option
+                if userin.upper() == "QUIT" or userin.upper() == "EXIT":
+                    break
+                elif userin.upper() == "TREES":
+                    player.printTrees(aliens)
+                    continue # Continuing still after trees of aliens are displayed
+
+                # User input for coordinates attack, implemented into starter code provided
+                search = re.search(r"\(?(-?\d+)[, ]+(-?\d+)\)?", userin)
+                if search:
+                    userx, usery = map(int, search.groups())
+                    attack_coords.append((userx, usery))
+                else:
+                    print("Invalid coordinates. Lose your turn.")
+
+                    # Updating player score if they skip/press enter or invalid coords
+                    # and maintaining minimum strength
+                    player.score -= 1
+                    player.strength = max(1, player.strength - 1)
+
+                    # Losing condition to check if player gets below or equal to -15 score
+                    if player.score <= -15:
+                        print("You're score was too negative. You lose.")
+                        # Providing player the option to play again
+                        play_again = input("Would you like to play again? (yes/no): ").strip().lower()
+                        if play_again == "yes":
+                            restartGame() # Call to restart the game
+                        else:
+                            exit(0)
+
+                    continue  # To handle skipping turn if invalid input
+
+            # Asking the player if they want to use bombs if they have atleast 2
+            if player.bombs >= 2:
+                bomb_choice = input("Do you want to use a bomb on this turn? (yes/no): ").strip().lower()
             else:
-                print("Invalid coordinates. Lose your turn.")
+                bomb_choice = "no"
 
-                # Updating player score if they skip/press enter or invalid coords
-                # and maintaining minimum strength
-                player.score -= 1
-                player.strength = max(1, player.strength - 1)
+            # Handling attack style, coordinates and strength based on players action
+            for coords in attack_coords:
+                if board.isEmpty(coords):
+                    print("Cell is empty. Lose your turn.")
+                    continue
 
-                # Losing condition to check if player gets below or equal to -15 score
-                if player.score <= -15:
-                    print("You're score was too negative. You lose.")
+                # Checking for bomb attack or regular attack
+                if bomb_choice == "yes":
+                    score = player.useBomb(coords)
+                else:
+                    score = board.squish(coords, player.strength)
+
+                # Adjusting player strength based on attack results
+                if score > 0:
+                    player.strength += 1 if player.strength < STRENGTH else 0
+                elif score <= 0:
+                    player.strength -= 1 if player.strength > 1 else 0
+                player.score += score
+            
+
+            board.doTimestep()
+
+            # I'm calling my mark and sweep after board timestep function because I
+            # need the changes to the game state to take affect before removing references
+            # to squished aliens, to fix the aliens trees
+            markAndSweep(aliens)
+
+            # Adding additional losing state. First counting number of cells with aliens in them
+            alien_count = 0
+            for i in range(WIDTH):
+                for j in range(HEIGHT):
+                    if board.getAlien([i, j]) is not None:
+                        alien_count += 1
+            
+            # Losing condition if the aliens have taken over 80% of the grid
+            if alien_count > (WIDTH * HEIGHT * 0.8):
+                print("Aliens win. You lose. Better luck next time.")
+                # Providing player the option to play again
+                play_again = input("Would you like to play again? (yes/no): ").strip().lower()
+                if play_again == "yes":
+                    restartGame() # Call to restart the game
+                else:
                     exit(0)
 
-                continue  # Skipping turn if invalid input
+            # Checking if board is empty by clearing remaining aliens currently
+            # before spawning new ones, if so you win and exit
+            if board.isEmpty():
+                print("You win!")
+                # Providing player the option to play again
+                play_again = input("Would you like to play again? (yes/no): ").strip().lower()
+                if play_again == "yes":
+                    restartGame() # Call to restart the game
+                else:
+                    exit(0)
 
-        # Asking the player if they want to use bombs if they have atleast 2
-        if player.bombs >= 2:
-            bomb_choice = input("Do you want to use a bomb on this turn? (yes/no): ").strip().lower()
-        else:
-            bomb_choice = "no"
-
-        # Handling attack style, coordinates and strength based on players action
-        for coords in attack_coords:
-            if board.isEmpty(coords):
-                print("Cell is empty. Lose your turn.")
-                continue
-
-            # Checking for bomb attack or regular attack
-            if bomb_choice == "yes":
-                score = player.useBomb(coords)
-            else:
-                score = board.squish(coords, player.strength)
-
-            # Adjusting player strength based on attack results
-            if score > 0:
-                player.strength += 1 if player.strength < STRENGTH else 0
-            elif score <= 0:
-                player.strength -= 1 if player.strength > 1 else 0
-            player.score += score
+            player.bombs += 1 # Add 1 bomb on each turn
+            # Add 2 troops each turn (for fairness after testing)
+            # After multiple turns aliens spawn more frequently & stronger
+            player.troops += 2
+            player.doTimestep()
         
-
-        board.doTimestep()
-
-        # I'm calling my mark and sweep after board timestep function because I
-        # need the changes to the game state to take affect before removing references
-        # to squished aliens, to fix the aliens trees
-        markAndSweep(aliens)
-
-        # Adding losing state. First counting number of cells with aliens in them
-        alien_count = 0
-        for i in range(WIDTH):
-            for j in range(HEIGHT):
-                if board.getAlien([i, j]) is not None:
-                    alien_count += 1
-        
-        # Losing condition if the aliens take over 80% of the grid
-        if alien_count > (WIDTH * HEIGHT * 0.8):
-            print("Aliens win. You lose. Be better next time.")
-            exit(0)
-
-        player.bombs += 1 # Add 1 bomb on each turn
-        player.troops += 1 # Add 1 troop on each turn
-        player.doTimestep()
-        if board.isEmpty():
-            print("You win!")
-            exit(0)
