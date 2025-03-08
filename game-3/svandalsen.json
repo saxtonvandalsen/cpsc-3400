@@ -1,0 +1,10 @@
+{
+    "crew_quarters": {
+      "description": "Your small bunk room with a metal frame bed and a flickering light.",
+      "north": "hallway",
+      "objects": [
+        {"objID": "toolbag", "interactions": ["LOOK", "TAKE"], "description": "Your toolbag, but it's empty."},
+        {"objID": "note", "interactions": ["LOOK", "READ"], "description": "A note from your shipmate about the leak."}
+      ]
+    }
+}
