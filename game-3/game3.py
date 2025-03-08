@@ -23,15 +23,16 @@
 
 # After reading through and thinking about how to go about creating my own text-based dungeon crawl
 # style game I decided that an object oriented approach would make the most sense.
+# Use each tool at the end to win the game and then provide the option to play again
 
 import sys
 import json
 
 # Player class
 class Player:
-    def __init__(self, direction, start_location):
+    def __init__(self, direction, startLocation):
         self.inventory = []
-        self.location = start_location
+        self.location = startLocation
         self.direction = direction
 
     # To get and display the current location of the player in case they forgot
@@ -59,27 +60,31 @@ class Item:
 
 # To handle navigating through through rooms in the ship
 class Ship:
-    def __init__(self, file_path=None):
+    def __init__(self, filePath=None):
         self.rooms = {} # To store rooms from json layout
         
         # Useful for the player to know how to run the game with a provided
         # json "dungeon" style map
-        if not file_path:
+        if not filePath:
             print("Error: No dungeon map provided.\n Run: python3 game3.py <dungeon.json>")
             sys.exit(1)
         
-        self.load_map(file_path) # Loading the provided map on command line
+        self.load_map(filePath) # Loading the provided map on command line
     
     # To load in a given map (dungeon)
-    def load_map(self, file_path):
+    def loadMap(self, filePath):
         # To load in json file from command line in read mode
         try:
-            with open(file_path, "r") as file:
+            with open(filePath, "r") as file:
                 self.rooms = json.load(file)
         # Used to troubleshoot command line loading json file
         except FileNotFoundError:
-            print(f"Error: File '{file_path}' not found.")
+            print(f"Error: File '{filePath}' not found.")
             sys.exit(1)
+        
+    # To get and return a Room object
+    def getRoom(self, roomName):
+        return self.rooms.get(roomName, None)
 
 
 # Define each room, the objects in that room, and how you can interact within each
@@ -90,10 +95,10 @@ class Room:
         self.directions = directions
         self.items = items
 
-# Handle the game flow and logic
-class Game:
-    def __init__(self,):
-
-
+# Originaly had a "Game" class to handle the flow and input handling but realized
+# I could scratch that and simply use main for that
 if __name__ == "__main__":
-    
+    # Providing the player the option to play again or not once
+    # beating the game
+    while True:
+        
