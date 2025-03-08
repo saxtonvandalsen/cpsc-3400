@@ -1,10 +1,68 @@
 {
     "crew_quarters": {
-      "description": "Your small bunk room with a metal frame bed and a flickering light.",
-      "north": "hallway",
-      "objects": [
-        {"objID": "toolbag", "interactions": ["LOOK", "TAKE"], "description": "Your toolbag, but it's empty."},
-        {"objID": "note", "interactions": ["LOOK", "READ"], "description": "A note from your shipmate about the leak."}
-      ]
+        "description": "Your small bunk room with a metal frame bed and a flickering light. Your toolbag is missing.",
+        "north": "hallway",
+        "objects": [
+            {
+                "objID": "note",
+                "interactions": ["LOOK", "READ"],
+                "description": "A note from your shipmate about the missing toolbag."
+            },
+            {
+                "objID": "flashlight",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "A small but powerful flashlight."
+            }
+        ]
+    },
+    "hallway": {
+        "description": "A long corridor with metal walls. You hear a faint hissing sound coming from the engine room.",
+        "north": "machinery_room",
+        "south": "crew_quarters",
+        "west": "storeroom",
+        "objects": []
+    },
+    "machinery_room": {
+        "description": "The Machinery Technician’s workspace, cluttered with tools and blueprints.",
+        "south": "hallway",
+        "objects": [
+            {
+                "objID": "key",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "A small key labeled 'Engine Room'."
+            },
+            {
+                "objID": "wrench",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "A heavy-duty wrench."
+            }
+        ]
+    },
+    "storeroom": {
+        "description": "A storage room filled with spare parts and tools.",
+        "east": "hallway",
+        "objects": [
+            {
+                "objID": "pipe_tape",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "Strong waterproof tape for temporary pipe fixes."
+            },
+            {
+                "objID": "pliers",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "A set of pliers for gripping and cutting."
+            }
+        ]
+    },
+    "engine_room": {
+        "description": "A dimly lit room filled with the hum of machinery. A large pipe is hissing steam. The door is locked.",
+        "west": "hallway",
+        "objects": [
+            {
+                "objID": "leaking_pipe",
+                "interactions": ["LOOK", "USE wrench", "USE pipe_tape"],
+                "description": "A pipe with a slow but steady leak. Needs fixing."
+            }
+        ]
     }
 }
