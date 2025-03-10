@@ -16,15 +16,40 @@
         ]
     },
     "hallway": {
-        "description": "A long corridor with metal walls. You hear a faint hissing sound coming from the engine room.",
-        "north": "machinery_room",
+        "description": "A long corridor with metal walls. You hear a faint hissing sound coming from deeper in the ship.",
+        "north": "galley",
         "south": "crew_quarters",
         "west": "storeroom",
+        "east": "crew_lounge",
         "objects": []
+    },
+    "galley": {
+        "description": "The ship’s kitchen, filled with the scent of stale coffee and last night's meal.",
+        "south": "hallway",
+        "objects": [
+            {
+                "objID": "coffee_mug",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "A sturdy coffee mug with a crack on the side."
+            }
+        ]
+    },
+    "crew_lounge": {
+        "description": "A relaxation area with worn-out chairs and a small table.",
+        "west": "hallway",
+        "south": "machinery_room",
+        "objects": [
+            {
+                "objID": "deck_of_cards",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "A weathered deck of playing cards."
+            }
+        ]
     },
     "machinery_room": {
         "description": "The Machinery Technician’s workspace, cluttered with tools and blueprints.",
-        "south": "hallway",
+        "north": "crew_lounge",
+        "east": "engine_room",
         "objects": [
             {
                 "objID": "key",
@@ -56,13 +81,14 @@
     },
     "engine_room": {
         "description": "A dimly lit room filled with the hum of machinery. A large pipe is hissing steam. The door is locked.",
-        "west": "hallway",
+        "west": "machinery_room",
         "objects": [
             {
                 "objID": "leaking_pipe",
                 "interactions": ["LOOK", "USE wrench", "USE pipe_tape"],
                 "description": "A pipe with a slow but steady leak. Needs fixing."
             }
-        ]
+        ],
+        "locked": true
     }
 }
