@@ -1,17 +1,22 @@
 {
     "crew_quarters": {
-        "description": "Your small bunk room with a metal frame bed and a flickering light. Your toolbag is missing.",
+        "description": "Your small bunk room with a metal frame bed and a flickering light.",
         "north": "hallway",
         "objects": [
             {
-                "objID": "note",
-                "interactions": ["LOOK", "READ"],
-                "description": "A note from your shipmate about the missing toolbag."
-            },
-            {
                 "objID": "flashlight",
                 "interactions": ["LOOK", "TAKE", "USE"],
-                "description": "A small but powerful flashlight."
+                "description": "A small flashlight."
+            },
+            {
+                "objID": "toolbag",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "Your toolbag, but it's missing your tools."
+            },
+            {
+                "objID": "shirt",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "Your dirty shirt is laying on your rack."
             }
         ]
     },
@@ -24,18 +29,28 @@
         "objects": []
     },
     "galley": {
-        "description": "The ship’s kitchen, filled with the scent of stale coffee and last night's meal.",
+        "description": "The ships kitchen, filled with the scent of coffee and last night's meal.",
         "south": "hallway",
         "objects": [
             {
                 "objID": "coffee_mug",
                 "interactions": ["LOOK", "TAKE"],
-                "description": "A sturdy coffee mug with a crack on the side."
+                "description": "The Captain's coffee mug with fresh hot coffee."
+            },
+            {
+                "objID": "old_soup",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "A cold pot of leftover chicken tortilla soup."
+            },
+            {
+                "objID": "small_pliers",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "Unusually small pliers on the countertop."
             }
         ]
     },
     "crew_lounge": {
-        "description": "A relaxation area with worn-out chairs and a small table.",
+        "description": "A relaxaing area for the crew with worn out chairs and a small table.",
         "west": "hallway",
         "south": "machinery_room",
         "objects": [
@@ -43,11 +58,21 @@
                 "objID": "deck_of_cards",
                 "interactions": ["LOOK", "TAKE"],
                 "description": "A weathered deck of playing cards."
+            },
+            {
+                "objID": "pipe_tape",
+                "interactions": ["LOOK", "TAKE", "USE"],
+                "description": "Strong waterproof tape for temporary pipe fixes."
+            },
+            {
+                "objID": "navy_medal",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "A navy medal was left on the side of a chair."
             }
         ]
     },
     "machinery_room": {
-        "description": "The Machinery Technician’s workspace, cluttered with tools and blueprints.",
+        "description": "The Machinery Technicians workspace, cluttered with tools and blueprints.",
         "north": "crew_lounge",
         "east": "engine_room",
         "objects": [
@@ -60,22 +85,32 @@
                 "objID": "wrench",
                 "interactions": ["LOOK", "TAKE", "USE"],
                 "description": "A heavy-duty wrench."
+            },
+            {
+                "objID": "screws",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "A half empty box of screws."
             }
         ]
     },
     "storeroom": {
-        "description": "A storage room filled with spare parts and tools.",
+        "description": "A storage room filled with documents, snacks, and some spare tools.",
         "east": "hallway",
         "objects": [
-            {
-                "objID": "pipe_tape",
-                "interactions": ["LOOK", "TAKE", "USE"],
-                "description": "Strong waterproof tape for temporary pipe fixes."
-            },
             {
                 "objID": "pliers",
                 "interactions": ["LOOK", "TAKE", "USE"],
                 "description": "A set of pliers for gripping and cutting."
+            },
+            {
+                "objID": "peanut_butter",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "You seem some delicious peanut butter."
+            },
+            {
+                "objID": "old_files",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "You see some boxes of old military files."
             }
         ]
     },
@@ -85,8 +120,18 @@
         "objects": [
             {
                 "objID": "leaking_pipe",
-                "interactions": ["LOOK", "USE wrench", "USE pipe_tape"],
+                "interactions": ["LOOK", "USE"],
                 "description": "A pipe with a slow but steady leak. Needs fixing."
+            },
+            {
+                "objID": "old_boots",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "Pair of old dirty worn boots is on the floor."
+            },
+            {
+                "objID": "captains_journal",
+                "interactions": ["LOOK", "TAKE"],
+                "description": "You see the captain's journal. Interesting."
             }
         ],
         "locked": true
