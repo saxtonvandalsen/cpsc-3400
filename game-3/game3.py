@@ -11,7 +11,7 @@ import re
 # directions, and inventory. I realized objects needed to be created, readable/actionable,
 # and manipulation for dynamic state change throughout the program, I read from Part 2 
 # and kept it noted throughout creating my object oriented approach to the game.
-# I kept naming standard of snake_case for json keys of rooms and object IDs naming to help 
+# I kept naming standard of snake_case style for json keys of rooms and object IDs naming to help 
 # differentiate map data from Python variables and objects. Helped a lot with troubleshooting/
 # debugging in game structure and in input/output statements
 class Player:
@@ -225,8 +225,8 @@ class Ship:
     def getRoom(self, roomName):
         room = self.rooms.get(roomName)
         if room is None:
-            # Debugging/troubleshooting check *
-            print(f"Error no such '{roomName}' room.")
+            # Letting the player no you can't go that way
+            print("Inaccessible shipmate.")
         return room
     
     # To unlock a room if Player has correct key/item in inventory to
@@ -396,7 +396,7 @@ if __name__ == "__main__":
     
     # Displaying the game introduction, an objective for the player, and some instructions for going about the game
     print("You've been woken up to a loud intercom noise requesting you to report to the engine room to a fix a pipe.")
-    print("Your objective is to find and collect the necessary tools to fix a leaking pipe in the engine room on an old navy ship.")
+    print("Your objective is to find and collect the necessary tools to fix a leaking pipe in the engine room on an old Navy ship.")
     print("Explore different rooms, take items, and use them where needed. Have fun shipmate!")
     print("Actionable commands: 'go, 'take', 'use', 'look', 'quit' or 'exit'.")
     print("-------------------------------------------------------------------------------")
@@ -428,7 +428,7 @@ if __name__ == "__main__":
             for itemName, item in currentRoom.items.items():
                 print(f"- {itemName}: {item.description}")
 
-        # Getting user input and parsing to lower case as well
+        # Getting user input and parsing to lower case as well, matching verbs below in conditional checks
         userInput = input("\n> ").strip().lower()
         verb, obj1, obj2 = parseInput(userInput)
 
@@ -440,7 +440,7 @@ if __name__ == "__main__":
             print("Exiting game. Thanks for playing!")
             break
 
-        # Checking for user input to move to another room and if there
+        # Checking verb go for user input to move to another room and if there
         # is a door thats locked
         elif verb == "GO":
             if currentRoom.isLocked():
