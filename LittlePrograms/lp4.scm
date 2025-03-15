@@ -111,7 +111,7 @@
     (cond ((> (total-hand-value player-final) 21) (display "Player busts!\n") #f)
         ((> (total-hand-value dealer-final) 21) (display "Player wins!\n") #t)
         ((> (total-hand-value player-final) (total-hand-value dealer-final)) (display "Player wins!\n") #t)
-        ((< (total-hand-value player-final) (total-hand-value dealer-final)) (display "Player loses!\n") #f)
+        ((< (total-hand-value player-final) (total-hand-value dealer-final)) (display "Player loses.\n") #f)
         (else (display "Tie!\n") #f)
     )
 )
@@ -128,15 +128,18 @@
     (print-results (car final-hands) (car (cdr final-hands)))
 )
 
-; Debugging this to process all blackjack rounds and tracking wins
+; Used to output the game for all hands and tracking player wins. Taking in the list
+; hands to play, current number wins, and total hands played then prints win count
 (define (output-game hands wins total)
-
+    ; Base case if no hands left, display win count
     (cond ((zero? (length hands))
         (display "Number of blackjack hands where current player wins: ")
-        (display wins) (display "/") (display total) (newline))
+        (display wins) (display "/") (display total) (display "\n"))
         
+        ; Playing next hand and updating win count for player if they won
         (else (output-game (cdr hands)
             (if (play-hand (car hands)) (+ wins 1) wins)
+            ; Incrementing total rounds played
             (+ total 1))
         )
     )
