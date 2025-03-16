@@ -1,1 +1,3 @@
-let num: i32 = "test"; // type mismatch error
+fn main() {
+    print!("Hello World!");
+}
