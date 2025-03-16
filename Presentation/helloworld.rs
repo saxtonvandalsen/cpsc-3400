@@ -1,0 +1,1 @@
+let num: i32 = "test"; // type mismatch error
