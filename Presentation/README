@@ -1,0 +1,108 @@
+README Doc
+
+This document provides the instructions for setting up and running the required
+Rust programs: helloworld.rs, lp1.rs, and lp2.rs. It includes necessary steps and
+checks for required software installation and compilation instructions.
+
+Required Software:
+To compile and execute Rust programs, you will need to have Rust installed on your
+system. Rust includes both the compiler (rustc) and Cargo, which is Rust's package
+manager and build system. Below are the steps to install Rust based on your operating
+system.
+
+Installing Rust
+The recommended way to install Rust is through (rustup), which is Rust's offical toolchain
+installer. This method ensures that you always have the latest stable version and allows for
+easy updates.
+
+To install Rust using rustup, open a terminal and run the following command:
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+This command is provided by the official Rust website and downloads the Rust toolchain
+installer. If you would like to review the official installation documentation for yourself
+or just learn more about (rustup), then visit:
+
+https://www.rust-lang.org/tools/install
+
+Once the installation is complete, restart your terminal and verify that Rust has been
+installed correctly by running:
+
+rustc --version
+cargo --version
+
+This should display the installed version of Rust and Cargo. If you see an error like "command
+not found", you may need to restart your terminal or manually set your environment variables by running:
+
+source $HOME/.cargo/env
+
+
+Alternative Installation for macOS users (Homebrew)
+Mac users who prefer homebrew can install Rust by running:
+
+brew install rust
+
+However, using (rustup) is still the recommended option because it will allow you to have better version
+control and updates.
+
+
+Text Editor or IDE
+While you can write Rust programs in any text editor, using a code editor makes it easier to write, debug,
+and format code properly. This is especially useful for new programmers or anyone that's new to Rust! Some
+recommended editors include:
+
+VS Code (Recommended & what I use!) - You can install the Rust Analyzer extension for syntax highlighting
+and error checking.
+
+JetBrains CLion - Rust support via plugin and popular IDE.
+
+Many other text editors and IDEs can be used with Rust, you might just have to install extensions or manual
+setups within them.
+
+
+Command Line Interface or CLI
+Rust programs are compiled and run through a terminal or command prompt. Use the appropriate CLI for your system:
+
+macOS - Use the Terminal application
+
+Windows - Use Command Prompt or you can use Powershell.
+
+Linux - Any terminal shell should work, such as Bash or Zsh.
+
+
+Compilation Instructions
+Rust source code files (.rs files) need to be compiled into an executable before they can be run. 
+Compilation is done using the Rust compiler (rustc). Follow these steps for each program:
+
+Compiling helloworld.rs:
+
+rustc helloworld.rs
+
+By default, this creates an executable file named helloworld in the same directory.
+To run the executable, use: ./helloworld
+
+Compiling lp1.rs:
+
+rustc lp1.rs
+
+This produces an executable file named lp1.
+To run the executable, use: ./lp1
+
+Compiling lp2.rs:
+
+rustc lp2.rs
+
+This produces an executable file named lp2.
+To run the executable, use: ./lp2
+
+
+If you encounter a "command not found" error when running rustc, 
+double-check that Rust is installed by running:
+
+rustc --version
+
+If Rust is installed but still not recognized, try running:
+
+source $HOME/.cargo/env
+
+This refreshes the environment variables so that your system can recognize Rust commands.
