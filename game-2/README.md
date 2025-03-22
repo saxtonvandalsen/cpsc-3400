@@ -1,4 +1,4 @@
-# **Alien Invasion Game**  
+# ** Game Lab 2 - Alien Invasion Game**  
 
 This project is an enhanced and refined version of a turn-based Alien Invasion game originally provided as starter code. The core mechanics involve a player strategically attacking alien invaders on an 8x8 grid, using both standard attacks and additional troops to eliminate threats before the board is overrun. The game previously lacked features that balanced the difficulty and limited player engagement, so I implemented significant improvements to make the gameplay more dynamic, strategic, and fair.  
 
