@@ -11,7 +11,7 @@ The repository is organized into several subfolders, each focusing on different 
 These folders contain various assignments related to game tree traversal and parsing, implemented in Python. Each game assignment involves designing programs to process input files (`svandalsen.tree` and `svandalsen.json`) and produce outputs based on the specifications of the problem.
 
 - **game-1:** Python program for tree traversal and evaluation based on a provided `.tree` file.
-- **game-2:** Python program implementing more advanced game traversal techniques, including a `README.md` explaining the assignment.
+- **game-2:** Python program implementing more advanced game traversal techniques.
 - **game-3:** Python program working with a JSON-based input file, focusing on parsing and data processing.
 
 ---
@@ -58,7 +58,7 @@ The coursework focused on understanding the core principles of programming langu
 - Context-free grammar generation and understanding language classification.
 - Differentiating between interpretation, compilation, and translation.
 - Understanding names, values, memory management, types, and variables.
-- Implementing functional programming techniques and addressing garbage collection challenges.
+- Implementing functional programming techniques and addressing garbage collection challenges with a focus on the Mark and Sweep technique.
 - Understanding Turing Machines and the Halting Problem.
 
 This repository provides a complete overview of the programming-related tasks for the course, showcasing comprehension of different programming paradigms and computation concepts.
