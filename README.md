@@ -11,7 +11,7 @@ The repository is organized into several subfolders, each focusing on different 
 These folders contain various assignments related to game tree traversal and parsing, implemented in Python. Each game assignment involves designing programs to process input files (`svandalsen.tree` and `svandalsen.json`) and produce outputs based on the specifications of the problem.
 
 - **game-1:** Python program for tree traversal and evaluation based on a provided `.tree` file.
-- **game-2:** Python program implementing more advanced game traversal techniques.
+- **game-2:** Python program building upon starter code given and focusing on Mark and Sweep implementation.
 - **game-3:** Python program working with a JSON-based input file, focusing on parsing and data processing.
 
 ---
