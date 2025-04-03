@@ -1,7 +1,7 @@
 # CPSC 3400 - Languages and Computation
 
 ## Overview
-This repository contains programming assignments, in-class programs, and presentation materials completed as part of the CPSC 3400 Languages and Computation course. The course focused on fundamental concepts related to programming languages, computation theories, and functional programming using Scheme, Python, and Rust. Topics covered include regular expressions, language classification, grammars, finite state automata, higher-order functions, and closures.
+This repository contains programming assignments, in-class programs, and presentation materials that I completed as part of CPSC 3400 Languages and Computation course. The course focused on fundamental concepts related to programming languages, computation theories, and functional programming using Scheme, Python, and Rust. Topics covered include regular expressions, language classification, grammars, finite state automata, syntax and semantcis, and functional programming concepts.
 
 The repository is organized into several subfolders, each focusing on different aspects of the coursework:
 
@@ -61,9 +61,4 @@ The coursework focused on understanding the core principles of programming langu
 - Implementing functional programming techniques and addressing garbage collection challenges with a focus on the Mark and Sweep technique.
 - Understanding Turing Machines and the Halting Problem.
 
-This repository provides a complete overview of the programming-related tasks for the course, showcasing comprehension of different programming paradigms and computation concepts.
-
----
-
-## How to Run
-Python and Scheme programs can be run using standard interpreters (e.g., Python 3 and GNU Guile). Rust programs can be compiled and executed using `rustc` or `cargo`.
+This repository provides a complete overview of the programming-related tasks I completed for this course. I really enjoyed learning about different programming paradigms and computational concepts throughout the quarter. It gave me a broader perspective on how languages are designed and how different approaches can solve the same problem in unique ways. Plus it was fun to get some hands on experience with recursive focused programs in Scheme.
